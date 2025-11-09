@@ -1,5 +1,6 @@
 from django.db import models
 from products.models import Product
+from django.contrib.auth.models import User
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -9,6 +10,15 @@ class Order(models.Model):
         ('delivered', 'Доставлен'),
         ('cancelled', 'Отменен'),
     ]
+
+    # Связь с пользователем (может быть NULL для гостевых заказов)
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        verbose_name='Пользователь'
+    )
     
     first_name = models.CharField(max_length=50, verbose_name='Имя')
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
